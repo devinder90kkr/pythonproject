@@ -46,6 +46,7 @@ def load_test_data():
         return json.load(f)
 
 @pytest.mark.usefixtures("setup")
+@pytest.mark.regression
 class TestInvalidLogin:
     """
     Test class for invalid login scenarios

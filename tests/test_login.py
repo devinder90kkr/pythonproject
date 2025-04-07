@@ -33,6 +33,7 @@ def load_test_data():
         return json.load(f)
 
 @pytest.mark.usefixtures("setup")
+@pytest.mark.smoke
 class TestLogin:
     def test_valid_login(self):
         self.logger.info("Starting valid login test")

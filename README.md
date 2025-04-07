@@ -124,6 +124,52 @@ seleniumautomation/
    python -m pytest tests/ -v --html=reports/report.html --self-contained-html
    ```
 
+4. Run Test Suites:
+   The framework provides different test suites that can be run using the `run_suites.py` script:
+
+   ```bash
+   python run_suites.py
+   ```
+
+   This will present a menu with the following options:
+   - 1. Smoke Tests: Run all tests marked with `@pytest.mark.smoke`
+   - 2. Regression Tests: Run all tests marked with `@pytest.mark.regression`
+   - 3. Login Tests: Run all tests marked with `@pytest.mark.login`
+   - 4. All Tests: Run all tests in the project
+
+   Each suite generates its own HTML report:
+   - Smoke Tests: `reports/smoke_report.html`
+   - Regression Tests: `reports/regression_report.html`
+   - Login Tests: `reports/login_report.html`
+   - All Tests: `reports/full_report.html`
+
+   You can also run specific suites directly using pytest:
+   ```bash
+   # Run smoke tests
+   pytest -m smoke -v
+
+   # Run regression tests
+   pytest -m regression -v
+
+   # Run login tests
+   pytest -m login -v
+   ```
+
+   To mark tests for specific suites, use the following decorators in your test files:
+   ```python
+   @pytest.mark.smoke
+   def test_smoke_feature():
+       pass
+
+   @pytest.mark.regression
+   def test_regression_feature():
+       pass
+
+   @pytest.mark.login
+   def test_login_feature():
+       pass
+   ```
+
 ## Reports and Logs
 
 ### Report Types
