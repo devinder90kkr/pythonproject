@@ -1,0 +1,12 @@
+{
+    "login": {
+        "valid_username": "quality2025control+8@gmail.com",
+        "valid_password": "User!234",
+        "invalid_username": "quality202control+8@gmail.com",
+        "invalid_password": "invalidpass"
+    },
+    "search": {
+        "valid_search_term": "selenium",
+        "invalid_search_term": "xyz123"
+    }
+} 
