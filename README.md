@@ -122,6 +122,9 @@ seleniumautomation/
 3. Generate HTML report:
    ```bash
    python -m pytest tests/ -v --html=reports/report.html --self-contained-html
+
+
+   python -m pytest tests/test_dashboard.py -v --html=reports/report.html --self-contained-html --capture=no 
    ```
 
 4. Run Test Suites:

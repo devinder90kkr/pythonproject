@@ -36,6 +36,7 @@ class DriverFactory:
                 options.add_argument('--headless')
             service = EdgeService(EdgeChromiumDriverManager().install())
             driver = webdriver.Edge(service=service, options=options)
+            driver.maximize_window()
         else:
             raise ValueError(f"Unsupported browser: {browser}")
 
