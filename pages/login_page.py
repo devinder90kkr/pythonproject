@@ -12,6 +12,8 @@ class LoginPage(BasePage):
         self.logger = Logger()  # Initialize logger
 
     def enter_username(self, username):
+        self.logger.info(f"Waiting for username field to be visible")
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(self.locators.USERNAME_FIELD))
         self.logger.info(f"Entering username: {username}")
         self.send_keys(self.locators.USERNAME_FIELD, username)
 
@@ -23,7 +25,6 @@ class LoginPage(BasePage):
         self.logger.info("Clicking login button")
         self.click(self.locators.LOGIN_BUTTON)
         
-       
     def is_staff_details_present(self):
         try:
             wait = WebDriverWait(self.driver, 3000)

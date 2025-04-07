@@ -23,6 +23,7 @@ class DriverFactory:
                 options.add_argument('--headless')
             service = ChromeService(ChromeDriverManager().install())
             driver = webdriver.Chrome(service=service, options=options)
+            driver.maximize_window()
         elif browser == 'firefox':
             options = webdriver.FirefoxOptions()
             if headless:

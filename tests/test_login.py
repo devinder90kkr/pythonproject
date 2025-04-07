@@ -40,14 +40,12 @@ class TestLogin:
             # Navigate to login page
             self.driver.get(self.config.get('ENVIRONMENT', 'base_url') + '/login')
             self.logger.info("Navigated to login page")
-            
             # Use LoginPage methods for login
             self.logger.info("Attempting to login with valid credentials")
             self.login_page.login(
                 self.test_data['login']['valid_username'],
                 self.test_data['login']['valid_password']
             )
-            
             # Explicitly check for staff details
             self.logger.info("Checking for staff details after login")
             staff_details_present = self.login_page.is_staff_details_present()

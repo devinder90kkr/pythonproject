@@ -1,46 +1,80 @@
 # Selenium Automation Framework
 
-This is a Python-based Selenium WebDriver automation framework designed for web application testing.
-
-## Features
-
-- Page Object Model implementation
-- Support for multiple browsers (Chrome, Firefox, Edge)
-- Configurable test environment
-- Detailed logging
-- Screenshot capture on test failure
-- HTML test reports
-- Parallel test execution
-- Data-driven testing support
+A robust and scalable Selenium WebDriver automation framework designed for web application testing. This framework follows best practices and provides comprehensive test reporting capabilities.
 
 ## Project Structure
 
 ```
 seleniumautomation/
-├── config/
-│   ├── config.ini        # Configuration settings
-│   └── test_data.json    # Test data
-├── pages/
-│   └── base_page.py      # Base page object
-├── tests/
-│   └── test_suite.py     # Test cases
-├── utils/
-│   ├── driver_factory.py # Browser initialization
-│   ├── logger.py         # Logging utility
-│   └── helpers.py        # Helper functions
-├── reports/              # Test reports and screenshots
-├── requirements.txt      # Python dependencies
-└── README.md            # Documentation
+├── config/                      # Configuration files
+│   ├── config.ini              # Environment and test configuration
+│   └── test_data.json          # Test data and credentials
+│
+├── pages/                       # Page Object Model implementation
+│   ├── base_page.py            # Base page with common functionality
+│   ├── login_page.py           # Login page specific functionality
+│   └── locators/               # Page element locators
+│       └── login_locators.py   # Login page locators
+│
+├── tests/                       # Test suites
+│   ├── test_login.py           # Login test cases
+│   └── test_invalid_login.py   # Invalid login test cases
+│
+├── utils/                       # Utility classes
+│   ├── driver_factory.py       # Browser driver initialization
+│   ├── logger.py               # Logging utility
+│   └── cleanup.py              # Report cleanup utility
+│
+├── reports/                     # Test reports and screenshots
+│   ├── report.html             # HTML test report
+│   └── screenshots/            # Test execution screenshots
+│
+├── logs/                        # Test execution logs
+│   └── test_*.log              # Individual test logs
+│
+├── requirements.txt             # Python dependencies
+├── pytest.ini                  # Pytest configuration
+└── README.md                   # Project documentation
 ```
 
-## Setup
+## Features
 
-1. Install Python 3.8 or higher
-2. Create a virtual environment:
+- **Page Object Model**: Clean and maintainable test structure
+- **Multi-Browser Support**: Chrome, Firefox, Edge
+- **Comprehensive Reporting**: 
+  - HTML reports with screenshots
+  - Detailed test logs
+  - Screenshot capture on failure
+- **Configurable Environment**: Easy setup for different environments
+- **Data-Driven Testing**: Support for JSON test data
+- **Automatic Cleanup**: Utility to manage old reports and logs
+
+## Prerequisites
+
+- Python 3.8 or higher
+- pip (Python package manager)
+- Git
+- Web browsers (Chrome, Firefox, Edge)
+
+## Installation
+
+1. Clone the repository:
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   git clone https://github.com/devinder90kkr/pythonproject.git
+   cd seleniumautomation
    ```
+
+2. Create and activate virtual environment:
+   ```bash
+   # Windows
+   python -m venv .venv
+   .venv\Scripts\activate
+
+   # Linux/Mac
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
@@ -48,107 +82,49 @@ seleniumautomation/
 
 ## Configuration
 
-1. Update `config/config.ini` with your environment settings:
-   - Base URL
-   - Browser selection
-   - Timeouts
-   - Report paths
+1. Update `config/config.ini`:
+   ```ini
+   [ENVIRONMENT]
+   base_url = your_base_url
+   
+   [BROWSER]
+   browser = chrome  # chrome, firefox, edge
+   
+   [TIMEOUTS]
+   implicit_wait = 10
+   explicit_wait = 30
+   ```
 
-2. Add test data to `config/test_data.json`
+2. Update `config/test_data.json`:
+   ```json
+   {
+     "login": {
+       "valid_username": "your_username",
+       "valid_password": "your_password",
+       "invalid_username": "invalid_user",
+       "invalid_password": "invalid_pass"
+     }
+   }
+   ```
 
 ## Running Tests
 
-Run all tests:
-```bash
-pytest tests/
-```
+1. Run all tests:
+   ```bash
+   python -m pytest tests/ -v
+   ```
 
-Run specific test:
-```bash
-pytest tests/test_login.py
-but working below command
-python -m pytest tests/test_login.py -v
-```
+2. Run specific test:
+   ```bash
+   python -m pytest tests/test_login.py -v
+   ```
 
-Run tests in parallel:
-```bash
-pytest -n auto tests/
-```
-
-### Generating Test Reports
-
-1. **Generate HTML Report with Screenshots**:
+3. Generate HTML report:
    ```bash
    python -m pytest tests/ -v --html=reports/report.html --self-contained-html
    ```
 
-2. **Generate Detailed HTML Report with Screenshots and Logs**:
-   ```bash
-   python -m pytest tests/ -v --html=reports/report.html --self-contained-html --capture=tee-sys
-   ```
-
-3. **Generate Report for Specific Test**:
-   ```bash
-   python -m pytest tests/test_login.py -v --html=reports/login_report.html --self-contained-html
-   ```
-
-4. **View Generated Reports**:
-   ```bash
-   # On Windows
-   start reports\report.html
-   
-   # On Linux/Mac
-   open reports/report.html
-   ```
-
-### Report Generation Options
-
-1. **Basic Report**:
-   - Test execution summary
-   - Pass/fail status
-   - Test duration
-   - Error messages
-
-2. **Detailed Report** (add `--capture=tee-sys`):
-   - All basic report features
-   - Console output
-   - System logs
-   - Test execution logs
-
-3. **Report with Screenshots**:
-   - All test reports include screenshots
-   - Screenshots are stored in `reports/screenshots/`
-   - Automatically captured for:
-     - Failed tests
-     - Login attempts
-     - Success scenarios
-
-4. **Log Files**:
-   - Location: `logs/`
-   - Format: Text files with timestamp
-   - Contains detailed execution logs
-
-### Viewing Reports
-
-1. **HTML Report**:
-   - Open `reports/report.html` in any web browser
-   - View test execution summary
-   - Check pass/fail status
-   - Review error messages
-   - View attached screenshots
-
-2. **Log Files**:
-   - Open log files in `logs/` directory
-   - View detailed execution steps
-   - Check error messages
-   - Review test timing
-
-3. **Screenshots**:
-   - View screenshots in `reports/screenshots/`
-   - Screenshots are named with timestamp
-   - Includes both success and failure scenarios
-
-## Reports and Logs Management
+## Reports and Logs
 
 ### Report Types
 1. **HTML Reports**
@@ -166,58 +142,59 @@ pytest -n auto tests/
    - Contains: Detailed step-by-step execution logs
    - Format: Text files with timestamp
 
-### Cleaning Up Reports and Logs
+### Cleaning Up Reports
+```bash
+# Remove reports older than 7 days (default)
+python cleanup_reports.py
 
-The framework provides utilities to manage report and log files:
+# Remove reports older than specific days
+python cleanup_reports.py --days 14
 
-1. **Remove reports older than X days** (default: 7 days):
-   ```bash
-   python cleanup_reports.py
-   ```
+# Remove all reports
+python cleanup_reports.py --all
 
-2. **Remove reports older than specific number of days**:
-   ```bash
-   python cleanup_reports.py --days 14
-   ```
-
-3. **Remove all reports and logs**:
-   ```bash
-   python cleanup_reports.py --all
-   ```
-
-### Report Contents
-- Test execution summary
-- Pass/fail status for each test
-- Test duration
-- Error messages and stack traces
-- Screenshots of failed tests
-- Detailed step-by-step logs
-
-### Log Contents
-- Test start/end times
-- Browser actions
-- Page interactions
-- Error messages
-- Screenshot capture events
-- Test assertions
+# start reports 
+start reports\reports.html
+```
 
 ## Best Practices
 
-1. Use Page Object Model for all web pages
-2. Keep locators in page objects
-3. Use explicit waits instead of implicit waits
-4. Add proper logging for test steps
-5. Handle test data through JSON files
-6. Take screenshots on test failure
-7. Use meaningful test names and descriptions
+1. **Page Object Model**
+   - Keep locators in page objects
+   - Implement reusable methods
+   - Use explicit waits
+
+2. **Test Structure**
+   - One test file per feature
+   - Clear test names
+   - Proper assertions
+
+3. **Logging**
+   - Log all important steps
+   - Include error details
+   - Use appropriate log levels
+
+4. **Reporting**
+   - Take screenshots on failure
+   - Include detailed error messages
+   - Clean up old reports regularly
 
 ## Troubleshooting
 
-1. Check browser compatibility
-2. Verify network connectivity
-3. Review logs in the logs directory
-4. Check screenshots for failed tests
-5. Ensure all dependencies are installed
+1. **Browser Issues**
+   - Check browser version compatibility
+   - Verify WebDriver version
+   - Clear browser cache
+
+2. **Test Failures**
+   - Check logs in `logs/` directory
+   - Review screenshots in `reports/screenshots/`
+   - Verify test data in `config/test_data.json`
+
+3. **Environment Issues**
+   - Verify Python version
+   - Check virtual environment
+   - Update dependencies
 
 ## Contributing
 
@@ -225,4 +202,11 @@ The framework provides utilities to manage report and log files:
 2. Create a feature branch
 3. Commit your changes
 4. Push to the branch
-5. Create a Pull Request 
+5. Create a Pull Request
+
+
+## Contact
+
+For any queries or support, please contact:
+- Email: devinder90kkr@gmail.com 
+- GitHub: [devinder90kkr](https://github.com/devinder90kkr) 
