@@ -203,7 +203,7 @@ python cleanup_reports.py --days 14
 python cleanup_reports.py --all
 
 # start reports 
-start reports\reports.html
+start reports/reports.html
 ```
 
 ## Best Practices

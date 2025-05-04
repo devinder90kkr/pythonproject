@@ -1,8 +1,8 @@
 {
     "login": {
-        "valid_username": "quality2025control+8@gmail.com",
-        "valid_password": "User!234",
-        "invalid_username": "quality202control+8@gmail.com",
+        "valid_username": "admin",
+        "valid_password": "admin@123",
+        "invalid_username": "admin1",
         "invalid_password": "invalidpass"
     },
     "search": {
