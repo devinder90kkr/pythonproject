@@ -1,6 +1,6 @@
 # Selenium Automation Framework
 
-A robust and scalable Selenium WebDriver automation framework designed for web application testing. This framework follows best practices and provides comprehensive test reporting capabilities.
+A robust and scalable Selenium WebDriver automation framework designed for web application testing. This framework follows best practices and provides a clean, maintainable structure for test automation.
 
 ## Project Structure
 
@@ -12,28 +12,18 @@ seleniumautomation/
 │
 ├── pages/                       # Page Object Model implementation
 │   ├── base_page.py            # Base page with common functionality
-│   ├── login_page.py           # Login page specific functionality
-│   └── locators/               # Page element locators
-│       └── login_locators.py   # Login page locators
+│   └── case01_login_page.py    # Login page specific functionality
 │
 ├── tests/                       # Test suites
-│   ├── test_login.py           # Login test cases
-│   └── test_invalid_login.py   # Invalid login test cases
+│   ├── case01_test_login.py    # Valid login test cases
+│   └── case02_test_invalid_login.py  # Invalid login test cases
 │
 ├── utils/                       # Utility classes
 │   ├── driver_factory.py       # Browser driver initialization
-│   ├── logger.py               # Logging utility
-│   └── cleanup.py              # Report cleanup utility
-│
-├── reports/                     # Test reports and screenshots
-│   ├── report.html             # HTML test report
-│   └── screenshots/            # Test execution screenshots
-│
-├── logs/                        # Test execution logs
-│   └── test_*.log              # Individual test logs
+│   └── locators.py             # Page element locators
 │
 ├── requirements.txt             # Python dependencies
-├── pytest.ini                  # Pytest configuration
+├── run_suites.py               # Test suite runner
 └── README.md                   # Project documentation
 ```
 
@@ -41,13 +31,8 @@ seleniumautomation/
 
 - **Page Object Model**: Clean and maintainable test structure
 - **Multi-Browser Support**: Chrome, Firefox, Edge
-- **Comprehensive Reporting**: 
-  - HTML reports with screenshots
-  - Detailed test logs
-  - Screenshot capture on failure
 - **Configurable Environment**: Easy setup for different environments
 - **Data-Driven Testing**: Support for JSON test data
-- **Automatic Cleanup**: Utility to manage old reports and logs
 
 ## Prerequisites
 
@@ -116,117 +101,36 @@ seleniumautomation/
 
 2. Run specific test:
    ```bash
-   python -m pytest tests/test_login.py -v
+   python -m pytest tests/case01_test_login.py -v
    ```
 
-3. Generate HTML report:
-   ```bash
-   python -m pytest tests/ -v --html=reports/report.html --self-contained-html
-
-
-   python -m pytest tests/test_dashboard.py -v --html=reports/report.html --self-contained-html --capture=no 
-   ```
-
-4. Run Test Suites:
-   The framework provides different test suites that can be run using the `run_suites.py` script:
+3. Run Test Suites:
+   The framework provides a test suite runner that can be executed using the `run_suites.py` script:
 
    ```bash
    python run_suites.py
    ```
 
-   This will present a menu with the following options:
-   - 1. Smoke Tests: Run all tests marked with `@pytest.mark.smoke`
-   - 2. Regression Tests: Run all tests marked with `@pytest.mark.regression`
-   - 3. Login Tests: Run all tests marked with `@pytest.mark.login`
-   - 4. All Tests: Run all tests in the project
-
-   Each suite generates its own HTML report:
-   - Smoke Tests: `reports/smoke_report.html`
-   - Regression Tests: `reports/regression_report.html`
-   - Login Tests: `reports/login_report.html`
-   - All Tests: `reports/full_report.html`
-
-   You can also run specific suites directly using pytest:
-   ```bash
-   # Run smoke tests
-   pytest -m smoke -v
-
-   # Run regression tests
-   pytest -m regression -v
-
-   # Run login tests
-   pytest -m login -v
-   ```
-
-   To mark tests for specific suites, use the following decorators in your test files:
-   ```python
-   @pytest.mark.smoke
-   def test_smoke_feature():
-       pass
-
-   @pytest.mark.regression
-   def test_regression_feature():
-       pass
-
-   @pytest.mark.login
-   def test_login_feature():
-       pass
-   ```
-
-## Reports and Logs
-
-### Report Types
-1. **HTML Reports**
-   - Location: `reports/report.html`
-   - Contains: Test execution summary, pass/fail status, test duration, error messages
-   - View: Open in web browser
-
-2. **Screenshots**
-   - Location: `reports/screenshots/`
-   - Captured for: Failed tests, login attempts, success scenarios
-   - Format: PNG files with timestamp
-
-3. **Log Files**
-   - Location: `logs/`
-   - Contains: Detailed step-by-step execution logs
-   - Format: Text files with timestamp
-
-### Cleaning Up Reports
-```bash
-# Remove reports older than 7 days (default)
-python cleanup_reports.py
-
-# Remove reports older than specific days
-python cleanup_reports.py --days 14
-
-# Remove all reports
-python cleanup_reports.py --all
-
-# start reports 
-start reports/reports.html
-```
+   This will run both login test cases:
+   - Valid login tests (case01)
+   - Invalid login tests (case02)
 
 ## Best Practices
 
 1. **Page Object Model**
-   - Keep locators in page objects
-   - Implement reusable methods
-   - Use explicit waits
+   - Keep locators in utils/locators.py
+   - Implement reusable methods in base_page.py
+   - Use explicit waits for better reliability
 
 2. **Test Structure**
    - One test file per feature
    - Clear test names
    - Proper assertions
 
-3. **Logging**
-   - Log all important steps
-   - Include error details
-   - Use appropriate log levels
-
-4. **Reporting**
-   - Take screenshots on failure
-   - Include detailed error messages
-   - Clean up old reports regularly
+3. **Test Organization**
+   - Group related tests together
+   - Use meaningful test case names
+   - Follow consistent naming conventions
 
 ## Troubleshooting
 
@@ -236,9 +140,9 @@ start reports/reports.html
    - Clear browser cache
 
 2. **Test Failures**
-   - Check logs in `logs/` directory
-   - Review screenshots in `reports/screenshots/`
-   - Verify test data in `config/test_data.json`
+   - Check test data in `config/test_data.json`
+   - Verify environment configuration
+   - Review test assertions
 
 3. **Environment Issues**
    - Verify Python version
@@ -252,7 +156,6 @@ start reports/reports.html
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
-
 
 ## Contact
 

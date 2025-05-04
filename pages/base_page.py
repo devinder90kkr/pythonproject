@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 import os
 from configparser import ConfigParser
-from datetime import datetime
 
 class BasePage:
     def __init__(self, driver):
@@ -12,7 +11,6 @@ class BasePage:
         self.config = ConfigParser()
         self.config.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'config.ini'))
         self.wait = WebDriverWait(self.driver, int(self.config.get('TIMEOUTS', 'explicit_wait')))
-        self.logger = None  # Will be set by the test class
 
     def find_element(self, locator):
         try:
@@ -70,27 +68,4 @@ class BasePage:
             element = self.find_element(locator)
             return element.text
         except TimeoutException:
-            self.logger.error(f"Element not found: {locator}")
-            return ""
-
-    def take_screenshot(self, name):
-        """
-        Take screenshot and save it
-        """
-        try:
-            # Create screenshots directory if it doesn't exist
-            screenshots_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'reports', 'screenshots')
-            if not os.path.exists(screenshots_dir):
-                os.makedirs(screenshots_dir)
-            
-            # Generate filename with timestamp
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"{name}_{timestamp}.png"
-            filepath = os.path.join(screenshots_dir, filename)
-            
-            # Take screenshot
-            self.driver.save_screenshot(filepath)
-            self.logger.info(f"Screenshot saved: {filename}")
-        except Exception as e:
-            self.logger.error(f"Failed to take screenshot: {str(e)}")
-            raise 
+            return "" 
