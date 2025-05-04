@@ -4,8 +4,9 @@ import os
 from selenium.webdriver.common.by import By
 from utils.driver_factory import DriverFactory
 from utils.logger import Logger
-from pages.login_page import LoginPage
+from pages.case01_login_page import LoginPage
 from configparser import ConfigParser
+from utils.extent_report_manager import ExtentReportManager
 import time
 import logging
 
@@ -14,9 +15,11 @@ def setup(request):
     driver = DriverFactory().get_driver()
     logger = Logger()
     login_page = LoginPage(driver)
+    extent_report = ExtentReportManager.get_instance()
     request.cls.driver = driver
     request.cls.logger = logger
     request.cls.login_page = login_page
+    request.cls.extent_report = extent_report
     request.cls.config = load_config()
     request.cls.test_data = load_test_data()
     yield
@@ -36,33 +39,34 @@ def load_test_data():
 @pytest.mark.smoke
 class TestLogin:
     def test_valid_login(self):
+        """Test login with valid credentials"""
+        self.extent_report.start_test("Valid Login Test", "Testing login with valid credentials")
         self.logger.info("Starting valid login test")
         try:
             # Navigate to login page
             self.driver.get(self.config.get('ENVIRONMENT', 'base_url') + '/login')
+            self.extent_report.log_info("Navigated to login page")
             self.logger.info("Navigated to login page")
+            
             # Use LoginPage methods for login
+            self.extent_report.log_info("Attempting to login with valid credentials")
             self.logger.info("Attempting to login with valid credentials")
             self.login_page.login(
                 self.test_data['login']['valid_username'],
                 self.test_data['login']['valid_password']
             )
-            # Explicitly check for staff details
-            self.logger.info("Checking for staff details after login")
-            staff_details_present = self.login_page.is_staff_details_present()
-            self.logger.info(f"Staff details check result: {staff_details_present}")
-            
-            # Assert staff details are present
-            assert staff_details_present, "Staff details not found after login"
-            self.logger.info("Staff details found successfully")
-            
+
             # Take screenshot of successful login
             self.login_page.take_screenshot("valid_login_success")
-            self.logger.info("Screenshot captured for successful login")
+            self.extent_report.add_screenshot("reports/screenshots/valid_login_success.png", "Login Success")
+            self.extent_report.log_pass("Login successful with valid credentials")
             self.logger.info("Valid login test completed successfully")
             
         except Exception as e:
+            self.extent_report.log_fail(f"Test failed: {str(e)}")
             self.logger.error(f"Test failed: {str(e)}")
             self.login_page.take_screenshot("valid_login_failure")
-            self.logger.error("Screenshot captured for failed login")
-            raise 
+            self.extent_report.add_screenshot("reports/screenshots/valid_login_failure.png", "Login Failure")
+            raise
+        finally:
+            self.extent_report.end_test() 

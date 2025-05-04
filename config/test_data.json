@@ -1,9 +1,13 @@
 {
     "login": {
-        "valid_username": "admin",
-        "valid_password": "admin@123",
-        "invalid_username": "admin1",
-        "invalid_password": "invalidpass"
+        "valid_username": "testuser",
+        "valid_password": "Test@123",
+        "invalid_username": "wronguser",
+        "invalid_password": "WrongPass123",
+        "special_chars_username": "test@#$%^&*",
+        "special_chars_password": "Test@#$%^&*",
+        "sql_injection_username": "' OR '1'='1",
+        "sql_injection_password": "' OR '1'='1"
     },
     "search": {
         "valid_search_term": "selenium",

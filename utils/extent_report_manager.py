@@ -1,10 +1,12 @@
 from datetime import datetime
 import os
 import pytest
+import webbrowser
 
 class ExtentReportManager:
     _instance = None
     _test = None
+    _report_path = None
 
     @classmethod
     def get_instance(cls):
@@ -22,6 +24,10 @@ class ExtentReportManager:
     def _setup_reports(self):
         if not os.path.exists("reports"):
             os.makedirs("reports")
+        
+        # Create a unique report name with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self._report_path = f"reports/extent_report_{timestamp}.html"
 
     def start_test(self, test_name, description=""):
         """Start a new test in the report"""
@@ -34,7 +40,9 @@ class ExtentReportManager:
 
     def flush_report(self):
         """Save and close the report"""
-        pass
+        if self._report_path:
+            # Open the report in the default web browser
+            webbrowser.open('file://' + os.path.realpath(self._report_path))
 
     def log_info(self, message):
         """Log an info message"""
